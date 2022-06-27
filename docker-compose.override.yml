@@ -37,9 +37,9 @@ services:
       MYSQL_PASSWORD: /run/secrets/mysql_password
     labels:
       # Domain
-      - "traefik.http.routers.crudapiwebnunez.rule=Host(`crud.api.webnunez.com`, `www.crud.api.webnunez.com`)"
+      - "traefik.http.routers.crudapi.rule=Host(`crud.api.webnunez.com`, `www.crud.api.webnunez.com`)"
       #Certresolver
-      - "traefik.http.routers.crudapiwebnunez.tls.certresolver=prodcertresolver"
+      - "traefik.http.routers.crudapi.tls.certresolver=prodcertresolver"
 
   client:
     command: bash -c "
@@ -51,6 +51,6 @@ services:
       && serve -s build"
     labels:
       # Domain
-      - "traefik.http.routers.crudwebnunez.rule=Host(`crud.webnunez.com`, `www.crud.webnunez.com`)"
+      - "traefik.http.routers.crud.rule=Host(`crud.webnunez.com`, `www.crud.webnunez.com`)"
       #Certresolver
-      - "traefik.http.routers.crudwebnunez.tls.certresolver=prodcertresolver"
+      - "traefik.http.routers.crud.tls.certresolver=prodcertresolver"
