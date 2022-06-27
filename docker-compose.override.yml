@@ -15,14 +15,14 @@ services:
     - mysql_database
     - mysql_user
     - mysql_password
-  environment:
-    NODE_ENV: production
-    MYSQL_ROOT_PASSWORD: /run/secrets/mysql_root_password
-    MYSQL_DATABASE: /run/secrets/mysql_database
-    MYSQL_USER: /run/secrets/mysql_user
-    MYSQL_PASSWORD: /run/secrets/mysql_password
-  volumes:
-    - /var/lib/dbs/crud_db:/var/lib/mysql 
+    environment:
+      NODE_ENV: production
+      MYSQL_ROOT_PASSWORD: /run/secrets/mysql_root_password
+      MYSQL_DATABASE: /run/secrets/mysql_database
+      MYSQL_USER: /run/secrets/mysql_user
+      MYSQL_PASSWORD: /run/secrets/mysql_password
+    volumes:
+      - /var/lib/dbs/crud_db:/var/lib/mysql 
       
   api:
     secrets:
