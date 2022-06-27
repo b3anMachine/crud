@@ -43,7 +43,8 @@ services:
 
   client:
     command: bash -c "
-      npm run build
+      npm install
+      && npm run build
       && npm install -g serve
       && serve -s build"
     labels:

@@ -59,8 +59,9 @@ services:
     volumes:
       - ./client:/app
     command: bash -c "
-      npm install
-      && npm start"
+      npm run build
+      && npm install -g serve
+      && serve -s build"
     stdin_open: true
     tty: true
     networks:
