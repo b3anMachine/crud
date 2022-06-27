@@ -60,7 +60,7 @@ services:
       - ./client:/app
     command: bash -c "
       npm run build
-      && chmod -R 777 node_modules/.cache
+      && chmod -R 777 /app/node_modules/.cache
       && npm install -g serve
       && serve -s build"
     stdin_open: true
