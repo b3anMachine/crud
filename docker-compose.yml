@@ -1,0 +1,81 @@
+networks:
+  proxy:
+    external: true
+
+services:
+  crud_db: 
+    image: mariadb
+    container_name: crud_db
+    restart: always
+    volumes:
+      - ./db:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: crud
+      MYSQL_USER: ed
+      MYSQL_PASSWORD: Password123
+    ports:
+      - 3306:3306
+    networks:
+      - proxy  
+
+  api:
+    depends_on:
+      - crud_db
+    build: ./api
+    container_name: crud_api
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: crud
+      MYSQL_USER: ed
+      MYSQL_PASSWORD: Password123
+    volumes:
+      - ./api:/app
+    networks:
+      - proxy
+    command: bash -c "
+      npm install
+      && node app.js"
+    labels:
+      # Service is configured with traefik proxy by the following labels:
+      # Enable treafik to monitor and proxy this service 
+      - "traefik.enable=true"
+      # Here we are defining wich entrypoint should be used by clients to access this service
+      - "traefik.http.routers.crudapi.entrypoints=websecure"
+      - "traefik.http.routers.crudapi.tls=true"
+      # Here we define wich network treafik can find this service
+      - "traefik.docker.network=proxy"
+      # This is the port that traefik should proxy
+      - "traefik.http.services.crudapi.loadbalancer.server.port=4000"
+      # Domain name
+      - "traefik.http.routers.crudapi.rule=Host(`crud.api.webnunez.com.localhost`)"
+
+  client:
+    depends_on:
+      - api
+    build: ./client
+    container_name: crud_frontend
+    volumes:
+      - ./client:/app
+    command: bash -c "
+      npm install
+      && npm start"
+    stdin_open: true
+    tty: true
+    networks:
+      - proxy
+    labels:
+      # Service is configured with traefik proxy by the following labels:
+      # Enable treafik to monitor and proxy this service 
+      - "traefik.enable=true"
+      # Here we are defining wich entrypoint should be used by clients to access this service
+      - "traefik.http.routers.crud.entrypoints=websecure"
+      - "traefik.http.routers.crud.tls=true"
+      # Here we define wich network treafik can find this service
+      - "traefik.docker.network=proxy"
+      # This is the port that traefik should proxy
+      - "traefik.http.services.crud.loadbalancer.server.port=3000"
+      # Domain name
+      - "traefik.http.routers.crud.rule=Host(`crud.webnunez.com.localhost`)"
+    

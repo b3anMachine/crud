@@ -1,0 +1,53 @@
+secrets:
+  mysql_root_password:
+    file: /etc/light/crud_db/mysql_root_password
+  mysql_database:
+    file: /etc/light/crud_db/mysql_database
+  mysql_user:
+    file: /etc/light/crud_db/mysql_user
+  mysql_password:
+    file: /etc/light/crud_db/mysql_password
+
+services:
+  crud_db: 
+    secrets:
+    - mysql_root_password
+    - mysql_database
+    - mysql_user
+    - mysql_password
+  environment:
+    NODE_ENV: production
+    MYSQL_ROOT_PASSWORD: /run/secrets/mysql_root_password
+    MYSQL_DATABASE: /run/secrets/mysql_database
+    MYSQL_USER: /run/secrets/mysql_user
+    MYSQL_PASSWORD: /run/secrets/mysql_password
+  volumes:
+    - /var/lib/dbs/crud_db:/var/lib/mysql 
+      
+  api:
+    secrets:
+    - mysql_database
+    - mysql_user
+    - mysql_password
+    environment:
+      NODE_ENV: production
+      MYSQL_DATABASE: crud_db
+      MYSQL_ROOT_PASSWORD: /run/secrets/mysql_root_password
+      MYSQL_USER: /run/secrets/mysql_user
+      MYSQL_PASSWORD: /run/secrets/mysql_password
+    labels:
+      # Domain
+      - "traefik.http.routers.crudapiwebnunez.rule=Host(`crud.api.webnunez.com`, `www.crud.api.webnunez.com`)"
+      #Certresolver
+      - "traefik.http.routers.crudapiwebnunez.tls.certresolver=prodcertresolver"
+
+  client:
+    command: bash -c "
+      npm run build
+      && npm install -g serve
+      && serve -s build"
+    labels:
+      # Domain
+      - "traefik.http.routers.crudwebnunez.rule=Host(`crud.webnunez.com`, `www.crud.webnunez.com`)"
+      #Certresolver
+      - "traefik.http.routers.crudwebnunez.tls.certresolver=prodcertresolver"
