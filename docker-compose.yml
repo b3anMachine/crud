@@ -59,10 +59,8 @@ services:
     volumes:
       - ./client:/app
     command: bash -c "
-      npm run build
-      && chmod -R 777 /app/node_modules/.cache
-      && npm install -g serve
-      && serve -s build"
+      npm install
+      && npm start"
     stdin_open: true
     tty: true
     networks:

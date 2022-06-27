@@ -44,6 +44,7 @@ services:
   client:
     command: bash -c "
       npm install
+      && mkdir node_modules/.cache
       && chmod -R 777 /app/node_modules/.cache
       && npm run build
       && npm install -g serve
