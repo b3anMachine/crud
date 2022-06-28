@@ -21,7 +21,7 @@ services:
       MYSQL_USER: /run/secrets/mysql_user
       MYSQL_PASSWORD: /run/secrets/mysql_password
     volumes:
-      - /var/lib/dbs/crud_db:/var/lib/mysql 
+      - /var/lib/dbs/crud:/var/lib/mysql 
       
   api:
     secrets:
