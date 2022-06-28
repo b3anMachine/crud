@@ -26,9 +26,9 @@ services:
     build: ./api
     container_name: crud_api
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: crud
+      DB_HOST: crud_db
       MYSQL_USER: ed
+      MYSQL_DATABASE: crud
       MYSQL_PASSWORD: Password123
     volumes:
       - ./api:/app
