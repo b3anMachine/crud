@@ -1,4 +1,3 @@
-USE crud;
 
 CREATE TABLE `employees` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
