@@ -30,9 +30,9 @@ services:
     - mysql_password
     environment:
       NODE_ENV: production
-      MYSQL_DATABASE: crud_db
-      MYSQL_ROOT_PASSWORD: /run/secrets/mysql_root_password
+      DB_HOST: crud_db
       MYSQL_USER: /run/secrets/mysql_user
+      MYSQL_DATABASE: crud
       MYSQL_PASSWORD: /run/secrets/mysql_password
     labels:
       # Domain
