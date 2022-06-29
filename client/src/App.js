@@ -78,7 +78,7 @@ function App() {
       <input type="text" onChange={(event) => { setCountry(event.target.value); }} />
       <p />
 
-      <button onClick={addEmployee} > add employee </button>
+      <button onClick={addEmployee} > Add employee </button>
       <p />
 
       <button onClick={getEmployees} > Show Employees </button>

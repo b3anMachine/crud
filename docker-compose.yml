@@ -30,13 +30,15 @@ services:
       MYSQL_USER: ed
       MYSQL_DATABASE: crud
       MYSQL_PASSWORD: Password123
+      CHOKIDAR_USEPOLLING: true
     volumes:
       - ./api:/app
     networks:
       - proxy
     command: bash -c "
       npm install
-      && node app.js"
+      && npm install -g nodemon
+      && nodemon app.js"
     labels:
       # Service is configured with traefik proxy by the following labels:
       # Enable treafik to monitor and proxy this service 
@@ -56,6 +58,9 @@ services:
       - api
     build: ./client
     container_name: crud_frontend
+    environment:
+      WATCHPACK_POLLING: true
+      WDS_SOCKET_PORT: 443
     volumes:
       - ./client:/app
     command: bash -c "

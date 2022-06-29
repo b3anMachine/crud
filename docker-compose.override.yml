@@ -34,6 +34,7 @@ services:
       MYSQL_USER: /run/secrets/mysql_user
       MYSQL_DATABASE: /run/secrets/mysql_database
       MYSQL_PASSWORD: /run/secrets/mysql_password
+      CHOKIDAR_USEPOLLING: false
     labels:
       # Domain
       - "traefik.http.routers.crudapi.rule=Host(`crud.api.webnunez.com`)"
@@ -41,6 +42,8 @@ services:
       - "traefik.http.routers.crudapi.tls.certresolver=prodcertresolver"
 
   client:
+    environment:
+      WATCHPACK_POLLING: false
     command: bash -c "
       npm install
       && mkdir -p node_modules/.cache
