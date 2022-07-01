@@ -3,11 +3,21 @@ const app = express();
 const mysql = require('mysql')
 const port = process.env.PORT || 4000;
 const cors = require("cors");
+const mysql2 = require('mysql2')
+const bodyParser = require('body-parser')
 
 app.use(cors());
 app.use(express.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
-const db = mysql.createConnection({
+const db0 = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.MYSQL_USER,
+  database: process.env.MYSQL_DATABASE,
+  password: process.env.MYSQL_PASSWORD,
+});
+
+const db = mysql2.createPool({
   host: process.env.DB_HOST,
   user: process.env.MYSQL_USER,
   database: process.env.MYSQL_DATABASE,
@@ -17,22 +27,24 @@ const db = mysql.createConnection({
 app.post('/create', (req, res) => {
   const name = req.body.name;
   const age = req.body.age;
-  const country = req.body.country;
+  const country = req.body.country;  
 
-  db.query('INSERT INTO employees (name, age, country) VALUES (?, ?, ?)', 
+  const query = 'INSERT INTO employees (name, age, country) VALUES (?, ?, ?)';
+  db.query(query, 
             [name, age, country], 
             (err, result) => {
                 if (err) {
                   console.log(err);
                 } else {
-                  res.send("Values Inserted");
+                  res.send(result);
                 }
             }
   );
 });
 
 app.get('/employees', (req, res) => {
-  db.query('SELECT * FROM employees', (err, result) => {
+  const query = 'SELECT * FROM employees';
+  db.query(query, (err, result) => {
     if (err) {
       console.log(err);
     } else {
@@ -41,11 +53,28 @@ app.get('/employees', (req, res) => {
   })
 });
 
+app.get('/employee/:id', (req, res) => {
+  const {id} = req.params;
 
-app.put('/update', (req, res) => {
-  const id = req.body.id
+  const query = 'SELECT * FROM employees where id = ?';
+  db.query(query, id, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  })
+});
+
+app.put('/update/:id', (req, res) => {
+  const id = req.params.id
+
+  const name = req.body.name
   const age = req.body.age
-  db.query('UPDATE employees SET age = ? WHERE id = ?', [age, id], (err, result) => {
+  const country = req.body.country
+
+  const query = 'UPDATE employees SET name = ?, age = ?, country = ? WHERE id = ?'
+  db.query(query, [name, age, country, id], (err, result) => {
     if (err) {
       console.log(err);
     } else {
@@ -56,7 +85,9 @@ app.put('/update', (req, res) => {
 
 app.delete('/delete/:id', (req, res) => {
   const id = req.params.id
-  db.query("DELETE FROM employees where id = ?", id, (err, result) => {
+
+  const query = "DELETE FROM employees where id = ?";
+  db.query(query, id, (err, result) => {
     if (err) {
       console.log(err);
     } else {
