@@ -132,11 +132,9 @@ const Home = () => {
                                             <button className="btn btn-edit">Edit</button>
                                         </Link>
 
-                                        {/* <Link to={}> */}
                                         <button className="btn btn-delete"
                                             onClick={() => {deleteEmployee(item.id) }}>
                                             Delete</button>
-                                        {/*</Link>*/}
                                     </td>
                                 </tr>
                             )

@@ -37,7 +37,6 @@ const Update = () => {
         } else {
             axios.put(backend + `/update/${id}`, { name, age, country })
                 .then(() => {
-                  
                 })
                 .catch((err) => toast.error(err.response.data));
                 toast.success("Contact Updated Successfully");
@@ -51,7 +50,8 @@ const Update = () => {
 
     return (
         <div className="Form">
-            <h3>Employee 23 </h3>
+            
+            <h3>Employee {id} </h3>
             <form
                 style={{
                     margin: "auto",
@@ -94,7 +94,7 @@ const Update = () => {
                 <div>
                 <input className="btn btn-edit" type="submit" value="Update" />
                 <Link to={`/`}>
-                    <input className="btn btn-edit" type="button" value="Return" onClick={() => navigate(-1)}/>
+                    <input className="btn btn-edit" type="button" value="Return" />
                 </Link>
                 </div>
             </form>
