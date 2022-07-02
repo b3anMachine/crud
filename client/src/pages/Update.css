@@ -34,9 +34,9 @@ label{
 form{
     display: inline-block
 }
-body {
-    text-align: center;
-}
+
+
+
 .Form {
     background-color: #282c34;
     display: flex;

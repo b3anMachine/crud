@@ -8,9 +8,10 @@
     color: white;
   }
   
-  body {
+body {
     background-color: #282c34;
-  }
+    text-align: center;
+}
 
   h1 {
     font-size: 2.5em; /* 40px/16=2.5em */
